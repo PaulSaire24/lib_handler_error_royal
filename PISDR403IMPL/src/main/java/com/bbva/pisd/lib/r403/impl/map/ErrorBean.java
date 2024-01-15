@@ -23,7 +23,7 @@ public class ErrorBean {
         return  err;
     }
 */
-    public static List<ErrorResponseDTO> mapErrorResponseEnum(String[] codes, String type){
+    public static List<ErrorResponseDTO> mapErrorResponseEnum(List<String> codes, String type){
 
         List<ErrorResponseDTO> errorsResponse = new ArrayList<>();
 

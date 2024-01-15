@@ -4,9 +4,10 @@ import com.bbva.elara.configuration.manager.application.ApplicationConfiguration
 import com.bbva.elara.utility.jdbc.JdbcUtils;
 import com.bbva.pisd.lib.r403.impl.map.ErrorBean;
 import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
+import com.bbva.rbvd.dto.insuranceroyal.error.DetailsErrorDTO;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ServiceError {
 
@@ -18,7 +19,6 @@ public class ServiceError {
         this.jdbcUtils = jdbcUtils;
     }
 
-
     /*public List<ErrorResponseDTO> findErrorDataBase(Map<String,Object> codes, String channel){
         String[] codesArray = codes.keySet().toArray(new String[0]);
         Map<String,Object> arguments = ErrorMap.mapError(codesArray,channel);
@@ -27,8 +27,8 @@ public class ServiceError {
         return  ErrorBean.mapErrorResponseBd(mapResponse);
     }*/
 
-    public List<ErrorResponseDTO> findErrorEnum(Map<String,Object> codes, String type){
-        String[] codesArray = codes.keySet().toArray(new String[0]);
-        return ErrorBean.mapErrorResponseEnum(codesArray,type);
+    public List<ErrorResponseDTO> findErrorEnum(List<DetailsErrorDTO> details, String type){
+        List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
+        return ErrorBean.mapErrorResponseEnum(codeArray,type);
     }
 }

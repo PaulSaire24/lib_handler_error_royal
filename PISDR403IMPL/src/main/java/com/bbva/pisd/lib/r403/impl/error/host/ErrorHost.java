@@ -5,9 +5,9 @@ import com.bbva.elara.utility.jdbc.JdbcUtils;
 import com.bbva.pisd.lib.r403.impl.error.Error;
 import com.bbva.pisd.lib.r403.impl.service.ServiceError;
 import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
+import com.bbva.rbvd.dto.insuranceroyal.error.DetailsErrorDTO;
 
 import java.util.List;
-import java.util.Map;
 
 public class ErrorHost extends Error {
     private ApplicationConfigurationService applicationConfigurationService;
@@ -19,8 +19,8 @@ public class ErrorHost extends Error {
     }
 
     @Override
-    public List<ErrorResponseDTO> findError(Map<String,Object> codes, String type) {
+    public List<ErrorResponseDTO> findError(List<DetailsErrorDTO> details, String type) {
         ServiceError serviceError = new ServiceError(applicationConfigurationService,jdbcUtils);
-        return serviceError.findErrorEnum(codes,type);
+        return serviceError.findErrorEnum(details,type);
     }
 }
