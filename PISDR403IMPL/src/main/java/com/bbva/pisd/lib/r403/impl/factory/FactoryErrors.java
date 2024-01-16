@@ -16,10 +16,8 @@ public class FactoryErrors {
            return new ErrorApx(applicationConfigurationService,jdbcUtils);
        } else if (Constants.ErrorType.ERROR_RIMAC.equals(condition)) {
            return new ErrorRimac(applicationConfigurationService,jdbcUtils);
-       } else if (Constants.ErrorType.ERROR_HOST.equals(condition)) {
+       } else{
            return new ErrorHost(applicationConfigurationService,jdbcUtils);
-       }else {
-           return  null;
        }
     }
 }

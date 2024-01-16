@@ -19,14 +19,6 @@ public class ServiceError {
         this.jdbcUtils = jdbcUtils;
     }
 
-    /*public List<ErrorResponseDTO> findErrorDataBase(Map<String,Object> codes, String channel){
-        String[] codesArray = codes.keySet().toArray(new String[0]);
-        Map<String,Object> arguments = ErrorMap.mapError(codesArray,channel);
-        LeadBD leadBD = new LeadBD(jdbcUtils);
-        Map<String, Object> mapResponse = leadBD.executeGetASingleRow(Constants.NameQuerys.QUERY_GET_ERROR_DATA_BASE, arguments);
-        return  ErrorBean.mapErrorResponseBd(mapResponse);
-    }*/
-
     public List<ErrorResponseDTO> findErrorEnum(List<DetailsErrorDTO> details, String type,Long httpCode){
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
         return ErrorBean.mapErrorResponseEnum(codeArray,type,httpCode);

@@ -8,21 +8,7 @@ import java.util.List;
 
 public class ErrorBean {
 
-    private ErrorBean() {}
 
- /*   public static List<ErrorResponseDTO> mapErrorResponseConsole(String code, String message){
-        ErrorResponse err = new ErrorResponse();
-        err.setCode(code);
-        err.setMessage(message);
-        return  err;
-    }
-    public static List<ErrorResponseDTO> mapErrorResponseBd(Map<String,Object> mapError){
-        ErrorResponse err = new ErrorResponse();
-        err.setCode((String) mapError.get(Constants.Fields.CODE));
-        err.setMessage((String) mapError.get(Constants.Fields.MESSAGE));
-        return  err;
-    }
-*/
     public static List<ErrorResponseDTO> mapErrorResponseEnum(List<String> codes, String type, Long httpCode){
 
         List<ErrorResponseDTO> errorsResponse = new ArrayList<>();
