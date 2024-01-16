@@ -1,13 +1,12 @@
 package com.bbva.pisd.lib.r403;
 
-/**
- * The  interface PISDR403 class...
- */
+import com.bbva.rbvd.dto.insuranceroyal.error.ErrorRequestDTO;
+import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
+
+import java.util.List;
+
 public interface PISDR403 {
 
-	/**
-	 * The execute method...
-	 */
-	void execute();
+	List<ErrorResponseDTO> executeFindError(ErrorRequestDTO requestError);
 
 }
