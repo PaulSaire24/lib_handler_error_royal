@@ -68,6 +68,7 @@ public class PISDR403Test {
 		details.setCode("COT0002001");
 		details.setValue("El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres");
 		error.setDetails(Collections.singletonList(details));
+		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
 		pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
@@ -81,6 +82,7 @@ public class PISDR403Test {
 		details.setCode("COT0002001");
 		details.setValue("El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres");
 		error.setDetails(Collections.singletonList(details));
+		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
 		pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
@@ -94,6 +96,7 @@ public class PISDR403Test {
 		details.setCode("COT0002001");
 		details.setValue("El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres");
 		error.setDetails(Collections.singletonList(details));
+		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
 		pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());

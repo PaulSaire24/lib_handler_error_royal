@@ -23,7 +23,7 @@ public class ErrorBean {
         return  err;
     }
 */
-    public static List<ErrorResponseDTO> mapErrorResponseEnum(List<String> codes, String type){
+    public static List<ErrorResponseDTO> mapErrorResponseEnum(List<String> codes, String type, Long httpCode){
 
         List<ErrorResponseDTO> errorsResponse = new ArrayList<>();
 
@@ -33,6 +33,7 @@ public class ErrorBean {
             err.setMessage(EnumsMethods.getMessageError(code));
             err.setTypeAlert(EnumsMethods.getTypeAlertError(code));
             err.setType(type);
+            err.setHttpCode(httpCode);
             errorsResponse.add(err);
         }
         return errorsResponse;

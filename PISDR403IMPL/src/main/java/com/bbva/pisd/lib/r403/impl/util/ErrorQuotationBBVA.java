@@ -1,8 +1,8 @@
 package com.bbva.pisd.lib.r403.impl.util;
 
 public enum ErrorQuotationBBVA {
-    C0012345("C0012345","El campo producto es requerido","wrong"),
-    C0012346("C0012346","El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres","wrong");
+    C0012345("BBVA00123457","El campo producto es requerido","wrong"),
+    C0012346("BBVA00123464","El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres","wrong");
 
     private final String code;
     private final String message;

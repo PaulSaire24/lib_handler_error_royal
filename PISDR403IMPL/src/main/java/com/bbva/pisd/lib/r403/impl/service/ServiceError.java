@@ -27,8 +27,8 @@ public class ServiceError {
         return  ErrorBean.mapErrorResponseBd(mapResponse);
     }*/
 
-    public List<ErrorResponseDTO> findErrorEnum(List<DetailsErrorDTO> details, String type){
+    public List<ErrorResponseDTO> findErrorEnum(List<DetailsErrorDTO> details, String type,Long httpCode){
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
-        return ErrorBean.mapErrorResponseEnum(codeArray,type);
+        return ErrorBean.mapErrorResponseEnum(codeArray,type,httpCode);
     }
 }

@@ -17,6 +17,6 @@ public class PISDR403Impl extends PISDR403Abstract {
 	public List<ErrorResponseDTO> executeFindError(ErrorRequestDTO requestError) {
 		LOGGER.info("request error: {0}",requestError);
 		Error error = FactoryErrors.requestErrorFactory(requestError.getTypeErrorScope(), this.applicationConfigurationService, this.jdbcUtils);
-		return error.findError(requestError.getDetails(),requestError.getTypeErrorScope());
+		return error.findError(requestError.getDetails(),requestError.getTypeErrorScope(),requestError.getHttpCode());
 	}
 }
