@@ -109,9 +109,7 @@ public class PISDR403Test {
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
 		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
-		System.out.println(listError);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertEquals(2,listError.size());
 		Assert.assertNotNull(listError);
 	}
 
@@ -132,9 +130,7 @@ public class PISDR403Test {
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
 		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
-		System.out.println(listError);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertEquals(2,listError.size());
 		Assert.assertNotNull(listError);
 	}
 
@@ -143,13 +139,13 @@ public class PISDR403Test {
 		ErrorRequestDTO error = new ErrorRequestDTO();
 		error.setChannel("PIC");
 		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PER009002");
+		details.setCode("PE016003");
 		details.setValue("El campo apeMaterno de persona en su elemento 1 es requerido");
 		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PER009011");
+		details1.setCode("PE011010");
 		details1.setValue("El campo apeMaterno de persona en su elemento 1 con valor \\\"@@\\\" no coincide para el patrón: a-zA-ZÀ-ÿ0-9_.&'\\\" -");
 		DetailsErrorDTO details2 = new DetailsErrorDTO();
-		details2.setCode("PER005005");
+		details2.setCode("UB010002");
 		details2.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
 		List<DetailsErrorDTO> detailsList = new ArrayList<>();
 		detailsList.add(details);
@@ -159,9 +155,7 @@ public class PISDR403Test {
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
 		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
-		System.out.println(listError);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertEquals(3,listError.size());
 		Assert.assertNotNull(listError);
 	}
 
@@ -182,9 +176,7 @@ public class PISDR403Test {
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
 		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
-		System.out.println(listError);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertEquals(2,listError.size());
 		Assert.assertNotNull(listError);
 	}
 
@@ -217,9 +209,7 @@ public class PISDR403Test {
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
 		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
-		System.out.println(listError);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertEquals(2,listError.size());
 		Assert.assertNotNull(listError);
 	}
 	@Test
@@ -235,9 +225,7 @@ public class PISDR403Test {
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
 		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
-		System.out.println(listError);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertEquals(2,listError.size());
 		Assert.assertNotNull(listError);
 	}
 

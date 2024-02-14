@@ -1,29 +1,32 @@
 package com.bbva.pisd.lib.r403.impl.util;
 
+import com.bbva.pisd.lib.r403.impl.util.life.addthird.ErrorExternalAddThird;
+
 public enum ErrorDataSet {
-   /* ERROR_QUOTATION(ErrorHandlerType.EXTERNAL_RIMAC,"COT","servicio cotizacion",
-            new ErrorMapper[]{ErrorMapper.COT0002001,
-                    ErrorMapper.COF0002003}),*/
-    ERROR_THIRD_VALIDATION(ErrorHandlerType.EXTERNAL_RIMAC,"THIRD","validación agregar terceros",
-            new ErrorMapper[]{ErrorMapper.COF000001,
-                    ErrorMapper.PER005005,
-                    ErrorMapper.PER005011,
-                    ErrorMapper.PER005004,
-                    ErrorMapper.PER005003,
-                    ErrorMapper.PER008002,
-                    ErrorMapper.PER008011,
-                    ErrorMapper.PER008004,
-                    ErrorMapper.PER009011,
-                    ErrorMapper.PER009002,
-                    ErrorMapper.PER009004,
-                    ErrorMapper.PER010002});
+
+    ERROR_LIFE_ADD_THIRD_MAP(ErrorHandlerType.EXTERNAL_RIMAC,"THIRD","validación agregar terceros",
+            new ErrorExternalAddThird[]{ErrorExternalAddThird.COF000001,
+                    ErrorExternalAddThird.PER005005,
+                    ErrorExternalAddThird.PER005011,
+                    ErrorExternalAddThird.PER005004,
+                    ErrorExternalAddThird.PER005003,
+                    ErrorExternalAddThird.PER008002,
+                    ErrorExternalAddThird.PER008011,
+                    ErrorExternalAddThird.PER008004,
+                    ErrorExternalAddThird.PER009011,
+                    ErrorExternalAddThird.PER009002,
+                    ErrorExternalAddThird.PER009004,
+                    ErrorExternalAddThird.PER010002,
+                    ErrorExternalAddThird.PE016003,
+                    ErrorExternalAddThird.PE011010,
+                    ErrorExternalAddThird.UB010002});
 
     private final ErrorHandlerType typeError;
     private final String code;
     private final String description;
-    private final ErrorMapper[] errors;
+    private final ErrorExternalAddThird[] errors;
 
-    ErrorDataSet(ErrorHandlerType typeError, String code, String description, ErrorMapper[] errors) {
+    ErrorDataSet(ErrorHandlerType typeError, String code, String description, ErrorExternalAddThird[] errors) {
         this.typeError = typeError;
         this.code = code;
         this.description = description;
@@ -42,7 +45,7 @@ public enum ErrorDataSet {
         return description;
     }
 
-    public ErrorMapper[] getErrors() {
+    public ErrorExternalAddThird[] getErrors() {
         return errors;
     }
 }

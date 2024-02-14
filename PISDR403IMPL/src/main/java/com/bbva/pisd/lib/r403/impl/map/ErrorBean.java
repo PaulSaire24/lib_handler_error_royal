@@ -13,17 +13,14 @@ public class ErrorBean {
 
         List<ErrorResponseDTO> errorsResponse = new ArrayList<>();
         ErrorResponseDTO err = new ErrorResponseDTO();
-        StringBuilder cod = new StringBuilder();
         StringBuilder mes = new StringBuilder();
 
         if(codes.size()>1){
             for (String code :codes) {
-                cod = cod.append(",").append(EnumsMethods.getCodeError(code));
                 mes = mes.append(" / ").append(EnumsMethods.getMessageError(code));
             }
-            cod.delete(0,1);
             mes.delete(0,3);
-            err.setCode(String.valueOf(cod));
+            err.setCode(EnumsMethods.getCodeError(codes.get(0)));
             err.setMessage(String.valueOf(mes));
             err.setType(type);
             err.setTypeAlert(EnumsMethods.getTypeAlertError(codes.get(codes.size()-1)));
