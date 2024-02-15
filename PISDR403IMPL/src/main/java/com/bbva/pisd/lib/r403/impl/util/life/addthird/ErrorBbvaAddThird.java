@@ -16,7 +16,9 @@ public enum ErrorBbvaAddThird {
     BBVA00123476("BBVA00123476","El nombre de la persona es requerido",""),
     BBVA00123477("BBVA00123477","El número de celular debe contener al menos 9 caracteres",""),
     BBVA00123478("BBVA00123478","La fecha de nacimiento debe tener un formato válido",""),
-    BBVA00123479("BBVA00123479","El campo número de vía es requerido","");
+    BBVA00123479("BBVA00123479","El campo número de vía es requerido",""),
+    BBVA00123480("BBVA00123480","El apellido paterno es requerido por favor ingresar",""),
+    BBVA00123481("BBVA00123481","El apellido materno es requerido por favor ingresar","");
     private final String code;
     private final String message;
     private final String typeAlert;

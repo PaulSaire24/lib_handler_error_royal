@@ -19,7 +19,9 @@ public enum ErrorDataSet {
                     ErrorExternalAddThird.PER010002,
                     ErrorExternalAddThird.PE016003,
                     ErrorExternalAddThird.PE011010,
-                    ErrorExternalAddThird.UB010002});
+                    ErrorExternalAddThird.UB010002,
+                    ErrorExternalAddThird.PE008002,
+                    ErrorExternalAddThird.PE009002});
 
     private final ErrorHandlerType typeError;
     private final String code;

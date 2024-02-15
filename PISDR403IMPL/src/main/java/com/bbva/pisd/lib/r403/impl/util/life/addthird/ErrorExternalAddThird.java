@@ -16,7 +16,9 @@ public enum ErrorExternalAddThird {
     PER010002("PER010002", ErrorBbvaAddThird.BBVA00123476),
     PE016003("PE016003", ErrorBbvaAddThird.BBVA00123477),
     PE011010("PE011010", ErrorBbvaAddThird.BBVA00123478),
-    UB010002("UB010002", ErrorBbvaAddThird.BBVA00123479);
+    UB010002("UB010002", ErrorBbvaAddThird.BBVA00123479),
+    PE008002("PE008002", ErrorBbvaAddThird.BBVA00123480),
+    PE009002("PE009002", ErrorBbvaAddThird.BBVA00123481);
 
     private final String code;
     private final ErrorBbvaAddThird error;

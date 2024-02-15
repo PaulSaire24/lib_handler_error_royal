@@ -77,19 +77,19 @@ public class PISDR403Test {
 		error.setDetails(Collections.singletonList(details));
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertTrue(listError.size()>0);
-		Assert.assertNotNull(listError);
+		//Assert.assertTrue(err.size()>0);
+		Assert.assertNotNull(err);
 	}
 
 	@Test
 	public void executeFindErrorTestRimac() throws IOException {
 		ErrorRequestDTO errorRe = DummyData.getInstance().getErrorRequestRoyal();
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(errorRe);
+		ErrorResponseDTO err = pisdR403.executeFindError(errorRe);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertTrue(listError.size()>0);
-		Assert.assertNotNull(listError);
+		//Assert.assertTrue(err.size()>0);
+		Assert.assertNotNull(err);
 	}
 
 	@Test
@@ -108,9 +108,9 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(listError);
+		Assert.assertNotNull(err);
 	}
 
 	@Test
@@ -129,9 +129,9 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(listError);
+		Assert.assertNotNull(err);
 	}
 
 	@Test
@@ -139,13 +139,13 @@ public class PISDR403Test {
 		ErrorRequestDTO error = new ErrorRequestDTO();
 		error.setChannel("PIC");
 		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PE016003");
+		details.setCode("PE008002");
 		details.setValue("El campo apeMaterno de persona en su elemento 1 es requerido");
 		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PE011010");
+		details1.setCode("PE009002");
 		details1.setValue("El campo apeMaterno de persona en su elemento 1 con valor \\\"@@\\\" no coincide para el patrón: a-zA-ZÀ-ÿ0-9_.&'\\\" -");
 		DetailsErrorDTO details2 = new DetailsErrorDTO();
-		details2.setCode("UB010002");
+		details2.setCode("PE011010");
 		details2.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
 		List<DetailsErrorDTO> detailsList = new ArrayList<>();
 		detailsList.add(details);
@@ -154,9 +154,9 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(listError);
+		Assert.assertNotNull(err);
 	}
 
 	@Test
@@ -175,9 +175,9 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(listError);
+		Assert.assertNotNull(err);
 	}
 
 	@Test
@@ -208,10 +208,11 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(listError);
+		Assert.assertNotNull(err);
 	}
+
 	@Test
 	public void testOneErrorPersonaRimacThird(){
 		ErrorRequestDTO error = new ErrorRequestDTO();
@@ -224,9 +225,9 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		List<ErrorResponseDTO> listError = pisdR403.executeFindError(error);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(listError);
+		Assert.assertNotNull(err);
 	}
 
 }

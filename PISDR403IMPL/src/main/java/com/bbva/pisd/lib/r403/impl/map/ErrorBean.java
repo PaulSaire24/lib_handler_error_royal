@@ -9,9 +9,8 @@ import java.util.List;
 public class ErrorBean {
 
 
-    public static List<ErrorResponseDTO> mapErrorResponseEnum(List<String> codes, String type, Long httpCode){
+    public static ErrorResponseDTO mapErrorResponseEnum(List<String> codes, String type, Long httpCode){
 
-        List<ErrorResponseDTO> errorsResponse = new ArrayList<>();
         ErrorResponseDTO err = new ErrorResponseDTO();
         StringBuilder mes = new StringBuilder();
 
@@ -32,8 +31,8 @@ public class ErrorBean {
             err.setType(type);
             err.setHttpCode(httpCode);
         }
-        errorsResponse.add(err);
-        return errorsResponse;
+
+        return err;
 
     }
 }

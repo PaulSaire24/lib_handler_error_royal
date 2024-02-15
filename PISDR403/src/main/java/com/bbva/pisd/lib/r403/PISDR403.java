@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PISDR403 {
 
-	List<ErrorResponseDTO> executeFindError(ErrorRequestDTO requestError);
+	ErrorResponseDTO executeFindError(ErrorRequestDTO requestError);
 
 }
