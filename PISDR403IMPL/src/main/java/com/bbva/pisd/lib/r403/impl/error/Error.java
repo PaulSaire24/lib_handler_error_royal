@@ -7,6 +7,6 @@ import java.util.List;
 
 public abstract class Error {
 
-    public abstract List<ErrorResponseDTO> findError(List<DetailsErrorDTO> details, String type, Long httpCode);
+    public abstract ErrorResponseDTO findError(List<DetailsErrorDTO> details, String type, Long httpCode);
 
 }

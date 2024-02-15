@@ -19,7 +19,7 @@ public class ServiceError {
         this.jdbcUtils = jdbcUtils;
     }
 
-    public List<ErrorResponseDTO> findErrorEnum(List<DetailsErrorDTO> details, String type,Long httpCode){
+    public ErrorResponseDTO findErrorEnum(List<DetailsErrorDTO> details, String type,Long httpCode){
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
         return ErrorBean.mapErrorResponseEnum(codeArray,type,httpCode);
     }

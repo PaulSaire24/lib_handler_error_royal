@@ -14,8 +14,8 @@ public class PISDR403Impl extends PISDR403Abstract {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR403Impl.class);
 
 	@Override
-	public List<ErrorResponseDTO> executeFindError(ErrorRequestDTO requestError) {
-		LOGGER.info("request error: {0}",requestError);
+	public ErrorResponseDTO executeFindError(ErrorRequestDTO requestError) {
+		LOGGER.info("request error:: request Error -> {}",requestError);
 		Error error = FactoryErrors.requestErrorFactory(requestError.getTypeErrorScope(), this.applicationConfigurationService, this.jdbcUtils);
 		return error.findError(requestError.getDetails(),requestError.getTypeErrorScope(),requestError.getHttpCode());
 	}
