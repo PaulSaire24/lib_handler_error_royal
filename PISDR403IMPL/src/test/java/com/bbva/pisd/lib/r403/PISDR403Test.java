@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -56,6 +59,8 @@ public class PISDR403Test {
 		context = new Context();
 		ThreadContext.set(context);
 		getObjectIntrospection();
+		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("false");
+		when(applicationConfigurationService.getDefaultProperty("rimacMessageSeparator"," / ")).thenReturn("|");
 	}
 
 	private Object getObjectIntrospection() throws Exception{
@@ -222,6 +227,57 @@ public class PISDR403Test {
 		details.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
 		List<DetailsErrorDTO> detailsList = new ArrayList<>();
 		detailsList.add(details);
+		error.setDetails(detailsList);
+		error.setHttpCode(409L);
+		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
+		Assert.assertEquals(0, context.getAdviceList().size());
+		Assert.assertNotNull(err);
+	}
+
+	@Test
+	public void executeFindErrorTestWithRimacMessage() {
+		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("true");
+		ErrorRequestDTO error = new ErrorRequestDTO();
+		error.setChannel("PIC");
+		DetailsErrorDTO details = new DetailsErrorDTO();
+		details.setCode("COT0002001");
+		details.setValue("El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres");
+		error.setDetails(Collections.singletonList(details));
+		error.setHttpCode(409L);
+		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
+		Assert.assertEquals(0, context.getAdviceList().size());
+		//Assert.assertTrue(err.size()>0);
+		Assert.assertNotNull(err);
+	}
+
+	@Test
+	public void testFiveErrorPersonaRimacThirdWithRimacMessage(){
+		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("true");
+		ErrorRequestDTO error = new ErrorRequestDTO();
+		error.setChannel("PIC");
+		DetailsErrorDTO details = new DetailsErrorDTO();
+		details.setCode("PER009004");
+		details.setValue("El campo apeMaterno de persona en su elemento 1 debe contener como máximo 30 caracteres");
+		DetailsErrorDTO details1 = new DetailsErrorDTO();
+		details1.setCode("PER010002");
+		details1.setValue("El campo nombres de persona en su elemento 1 es requerido");
+		DetailsErrorDTO details2 = new DetailsErrorDTO();
+		details2.setCode("PER005005");
+		details2.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
+		DetailsErrorDTO details3 = new DetailsErrorDTO();
+		details3.setCode("PER005011");
+		details3.setValue("El campo nroDocumento de persona en su elemento 1 con valor \\\"@\\\" no coincide para el patrón: 0-9");
+		DetailsErrorDTO details4 = new DetailsErrorDTO();
+		details4.setCode("PER005004");
+		details4.setValue("El campo nroDocumento de persona en su elemento 1 debe contener como máximo 11 caracteres");
+		List<DetailsErrorDTO> detailsList = new ArrayList<>();
+		detailsList.add(details);
+		detailsList.add(details1);
+		detailsList.add(details2);
+		detailsList.add(details3);
+		detailsList.add(details4);
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);

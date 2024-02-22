@@ -21,6 +21,8 @@ public class ServiceError {
 
     public ErrorResponseDTO findErrorEnum(List<DetailsErrorDTO> details, String type,Long httpCode){
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
-        return ErrorBean.mapErrorResponseEnum(codeArray,type,httpCode);
+        //Método para obtener mensajes directos rimac
+        List<String> messageArray = details.stream().map(x -> x.getValue()).collect(Collectors.toList());
+        return ErrorBean.mapErrorResponseEnum(codeArray,messageArray,type,httpCode, applicationConfigurationService);
     }
 }
