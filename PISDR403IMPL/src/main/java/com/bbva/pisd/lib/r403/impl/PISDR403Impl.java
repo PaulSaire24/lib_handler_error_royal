@@ -7,7 +7,6 @@ import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 public class PISDR403Impl extends PISDR403Abstract {
 

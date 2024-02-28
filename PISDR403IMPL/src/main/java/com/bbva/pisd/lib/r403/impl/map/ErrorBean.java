@@ -3,7 +3,6 @@ package com.bbva.pisd.lib.r403.impl.map;
 import com.bbva.pisd.lib.r403.impl.util.EnumsMethods;
 import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ErrorBean {
@@ -31,8 +30,7 @@ public class ErrorBean {
             err.setType(type);
             err.setHttpCode(httpCode);
         }
-
         return err;
-
     }
+
 }
