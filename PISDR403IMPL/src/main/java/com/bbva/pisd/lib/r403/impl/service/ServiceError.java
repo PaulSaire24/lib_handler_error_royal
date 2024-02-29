@@ -36,7 +36,6 @@ public class ServiceError {
         LOGGER.info("ServiceError:: findErrrosBD query Id -> {}",queryId);
         List<Map<String,Object>> resul = leadBD.executeGetListASingleRow(queryId,arguments);
         LOGGER.info("ServiceError:: result for database query -> {}",resul);
-        System.out.println(resul);
         List<Map<String, String>> newList = new ArrayList<>();
         for (Map<String, Object> map : resul) {
             if (map.containsKey("CATALOG_ELEMENT_DESC")) {

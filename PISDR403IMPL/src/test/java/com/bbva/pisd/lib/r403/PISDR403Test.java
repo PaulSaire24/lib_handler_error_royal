@@ -26,10 +26,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.bbva.pisd.lib.r403.impl.util.Constants;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -85,6 +91,14 @@ public class PISDR403Test {
 		error.setDetails(Collections.singletonList(details));
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
+
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
 		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
 		//Assert.assertTrue(err.size()>0);
@@ -94,6 +108,13 @@ public class PISDR403Test {
 	@Test
 	public void executeFindErrorTestRimac() throws IOException {
 		ErrorRequestDTO errorRe = DummyData.getInstance().getErrorRequestRoyal();
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
 		ErrorResponseDTO err = pisdR403.executeFindError(errorRe);
 		Assert.assertEquals(0, context.getAdviceList().size());
 		//Assert.assertTrue(err.size()>0);
@@ -101,7 +122,7 @@ public class PISDR403Test {
 	}
 
 	@Test
-	public void executeGetListASingleRow_OK() throws IOException {
+	public void executeGetListASingleRow_OK() {
 		ErrorRequestDTO error = new ErrorRequestDTO();
 		error.setChannel("PIC");
 		DetailsErrorDTO details = new DetailsErrorDTO();
@@ -122,7 +143,7 @@ public class PISDR403Test {
 		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
 		listResponse.add(response);
 
-		when(jdbcUtils.queryForList("anyQueryId", new HashMap<>())).thenReturn(listResponse);
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
 
 		ErrorResponseDTO err= pisdR403.executeFindError(error);
 
@@ -130,13 +151,32 @@ public class PISDR403Test {
 	}
 
 	@Test
-	public void executeGetListASingleRow_WithNoResultException() throws IOException {
-		ErrorRequestDTO errorRe = DummyData.getInstance().getErrorRequestRoyal();
-		when(jdbcUtils.queryForList("anyQueryId", new HashMap<>())).thenThrow(new NoResultException("adviceCode", "errorMessage"));
+	public void executeGetListASingleRow_OK_apx() {
+		ErrorRequestDTO error = new ErrorRequestDTO();
+		error.setChannel("PIC");
+		DetailsErrorDTO details = new DetailsErrorDTO();
+		details.setCode("PER005005");
+		details.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
+		DetailsErrorDTO details1 = new DetailsErrorDTO();
+		details1.setCode("PER005004");
+		details1.setValue("El campo nroDocumento de persona en su elemento 1 debe contener como máximo 11 caracteres");
+		List<DetailsErrorDTO> detailsList = new ArrayList<>();
+		detailsList.add(details);
+		detailsList.add(details1);
+		error.setDetails(detailsList);
+		error.setHttpCode(409L);
+		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
 
-		ErrorResponseDTO err= pisdR403.executeFindError(errorRe);
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
 
-		assertNull(err);
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
+		ErrorResponseDTO err= pisdR403.executeFindError(error);
+
+		assertNotNull(err);
 	}
 
 
