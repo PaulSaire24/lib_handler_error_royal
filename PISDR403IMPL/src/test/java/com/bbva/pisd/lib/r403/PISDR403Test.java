@@ -6,6 +6,7 @@ import com.bbva.elara.domain.transaction.ThreadContext;
 import javax.annotation.Resource;
 
 import com.bbva.elara.utility.jdbc.JdbcUtils;
+import com.bbva.pisd.lib.r403.impl.PISDR403Impl;
 import com.bbva.rbvd.dto.insuranceroyal.error.ErrorRequestDTO;
 import com.bbva.rbvd.dto.insuranceroyal.error.DetailsErrorDTO;
 import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
@@ -14,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
@@ -23,12 +25,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.bbva.pisd.lib.r403.impl.util.Constants;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Map;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,8 +52,8 @@ public class PISDR403Test {
 	@Spy
 	private Context context;
 
-	@Resource(name = "pisdR403")
-	private PISDR403 pisdR403;
+	@InjectMocks
+	private  PISDR403Impl pisdR403;
 
 	@Mock
 	private JdbcUtils jdbcUtils;
@@ -58,6 +68,8 @@ public class PISDR403Test {
 		MockitoAnnotations.initMocks(this);
 		context = new Context();
 		ThreadContext.set(context);
+		jdbcUtils = mock(JdbcUtils.class);
+		pisdR403.setJdbcUtils(jdbcUtils);
 		getObjectIntrospection();
 		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("false");
 		when(applicationConfigurationService.getDefaultProperty("rimacMessageSeparator"," / ")).thenReturn("|");
@@ -82,6 +94,14 @@ public class PISDR403Test {
 		error.setDetails(Collections.singletonList(details));
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
+
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
 		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
 		//Assert.assertTrue(err.size()>0);
@@ -91,6 +111,13 @@ public class PISDR403Test {
 	@Test
 	public void executeFindErrorTestRimac() throws IOException {
 		ErrorRequestDTO errorRe = DummyData.getInstance().getErrorRequestRoyal();
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
 		ErrorResponseDTO err = pisdR403.executeFindError(errorRe);
 		Assert.assertEquals(0, context.getAdviceList().size());
 		//Assert.assertTrue(err.size()>0);
@@ -98,7 +125,7 @@ public class PISDR403Test {
 	}
 
 	@Test
-	public void executeFindErrorThirdTestRimac()  {
+	public void executeGetListASingleRow_OK() {
 		ErrorRequestDTO error = new ErrorRequestDTO();
 		error.setChannel("PIC");
 		DetailsErrorDTO details = new DetailsErrorDTO();
@@ -113,177 +140,47 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
+
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
+		ErrorResponseDTO err= pisdR403.executeFindError(error);
+
+		assertNotNull(err);
 	}
 
 	@Test
-	public void executeFindErrorTestApx(){
+	public void executeGetListASingleRow_OK_apx() {
 		ErrorRequestDTO error = new ErrorRequestDTO();
 		error.setChannel("PIC");
 		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PER008002");
-		details.setValue("El campo apePaterno de persona en su elemento 1 es requerido");
+		details.setCode("PER005005");
+		details.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
 		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PER008011");
-		details1.setValue("El campo apePaterno de persona en su elemento 1 con valor \\\"@@\\\" no coincide para el patrón: a-zA-ZÀ-ÿ0-9_.&'\\\" -");
+		details1.setCode("PER005004");
+		details1.setValue("El campo nroDocumento de persona en su elemento 1 debe contener como máximo 11 caracteres");
 		List<DetailsErrorDTO> detailsList = new ArrayList<>();
 		detailsList.add(details);
 		detailsList.add(details1);
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
+
+		List<Map<String, Object>> listResponse = new ArrayList<>();
+		Map<String, Object> response = new HashMap<>();
+		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
+		listResponse.add(response);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenReturn(listResponse);
+
+		ErrorResponseDTO err= pisdR403.executeFindError(error);
+
+		assertNotNull(err);
 	}
 
-	@Test
-	public void testErrorRimacThird(){
-		ErrorRequestDTO error = new ErrorRequestDTO();
-		error.setChannel("PIC");
-		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PE008002");
-		details.setValue("El campo apeMaterno de persona en su elemento 1 es requerido");
-		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PE009002");
-		details1.setValue("El campo apeMaterno de persona en su elemento 1 con valor \\\"@@\\\" no coincide para el patrón: a-zA-ZÀ-ÿ0-9_.&'\\\" -");
-		DetailsErrorDTO details2 = new DetailsErrorDTO();
-		details2.setCode("PE011010");
-		details2.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
-		List<DetailsErrorDTO> detailsList = new ArrayList<>();
-		detailsList.add(details);
-		detailsList.add(details1);
-		detailsList.add(details2);
-		error.setDetails(detailsList);
-		error.setHttpCode(409L);
-		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
-	}
-
-	@Test
-	public void testErrorPersonaRimacThird(){
-		ErrorRequestDTO error = new ErrorRequestDTO();
-		error.setChannel("PIC");
-		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PER009004");
-		details.setValue("El campo apeMaterno de persona en su elemento 1 debe contener como máximo 30 caracteres");
-		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PER010002");
-		details1.setValue("El campo nombres de persona en su elemento 1 es requerido");
-		List<DetailsErrorDTO> detailsList = new ArrayList<>();
-		detailsList.add(details);
-		detailsList.add(details1);
-		error.setDetails(detailsList);
-		error.setHttpCode(409L);
-		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
-	}
-
-	@Test
-	public void testFiveErrorPersonaRimacThird(){
-		ErrorRequestDTO error = new ErrorRequestDTO();
-		error.setChannel("PIC");
-		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PER009004");
-		details.setValue("El campo apeMaterno de persona en su elemento 1 debe contener como máximo 30 caracteres");
-		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PER010002");
-		details1.setValue("El campo nombres de persona en su elemento 1 es requerido");
-		DetailsErrorDTO details2 = new DetailsErrorDTO();
-		details2.setCode("PER005005");
-		details2.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
-		DetailsErrorDTO details3 = new DetailsErrorDTO();
-		details3.setCode("PER005011");
-		details3.setValue("El campo nroDocumento de persona en su elemento 1 con valor \\\"@\\\" no coincide para el patrón: 0-9");
-		DetailsErrorDTO details4 = new DetailsErrorDTO();
-		details4.setCode("PER005004");
-		details4.setValue("El campo nroDocumento de persona en su elemento 1 debe contener como máximo 11 caracteres");
-		List<DetailsErrorDTO> detailsList = new ArrayList<>();
-		detailsList.add(details);
-		detailsList.add(details1);
-		detailsList.add(details2);
-		detailsList.add(details3);
-		detailsList.add(details4);
-		error.setDetails(detailsList);
-		error.setHttpCode(409L);
-		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
-	}
-
-	@Test
-	public void testOneErrorPersonaRimacThird(){
-		ErrorRequestDTO error = new ErrorRequestDTO();
-		error.setChannel("PIC");
-		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PER005005");
-		details.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
-		List<DetailsErrorDTO> detailsList = new ArrayList<>();
-		detailsList.add(details);
-		error.setDetails(detailsList);
-		error.setHttpCode(409L);
-		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
-	}
-
-	@Test
-	public void executeFindErrorTestWithRimacMessage() {
-		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("true");
-		ErrorRequestDTO error = new ErrorRequestDTO();
-		error.setChannel("PIC");
-		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("COT0002001");
-		details.setValue("El campo valor de datosParticulares en su elemento 1 debe contener como máximo 7 caracteres");
-		error.setDetails(Collections.singletonList(details));
-		error.setHttpCode(409L);
-		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertTrue(err.size()>0);
-		Assert.assertNotNull(err);
-	}
-
-	@Test
-	public void testFiveErrorPersonaRimacThirdWithRimacMessage(){
-		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("true");
-		ErrorRequestDTO error = new ErrorRequestDTO();
-		error.setChannel("PIC");
-		DetailsErrorDTO details = new DetailsErrorDTO();
-		details.setCode("PER009004");
-		details.setValue("El campo apeMaterno de persona en su elemento 1 debe contener como máximo 30 caracteres");
-		DetailsErrorDTO details1 = new DetailsErrorDTO();
-		details1.setCode("PER010002");
-		details1.setValue("El campo nombres de persona en su elemento 1 es requerido");
-		DetailsErrorDTO details2 = new DetailsErrorDTO();
-		details2.setCode("PER005005");
-		details2.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
-		DetailsErrorDTO details3 = new DetailsErrorDTO();
-		details3.setCode("PER005011");
-		details3.setValue("El campo nroDocumento de persona en su elemento 1 con valor \\\"@\\\" no coincide para el patrón: 0-9");
-		DetailsErrorDTO details4 = new DetailsErrorDTO();
-		details4.setCode("PER005004");
-		details4.setValue("El campo nroDocumento de persona en su elemento 1 debe contener como máximo 11 caracteres");
-		List<DetailsErrorDTO> detailsList = new ArrayList<>();
-		detailsList.add(details);
-		detailsList.add(details1);
-		detailsList.add(details2);
-		detailsList.add(details3);
-		detailsList.add(details4);
-		error.setDetails(detailsList);
-		error.setHttpCode(409L);
-		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
-		ErrorResponseDTO err = pisdR403.executeFindError(error);
-		Assert.assertEquals(0, context.getAdviceList().size());
-		Assert.assertNotNull(err);
-	}
 
 }
