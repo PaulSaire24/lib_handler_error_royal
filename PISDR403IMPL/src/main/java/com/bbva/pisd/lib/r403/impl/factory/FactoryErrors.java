@@ -11,7 +11,7 @@ import com.bbva.pisd.lib.r403.impl.util.Constants;
 public class FactoryErrors {
     private FactoryErrors() {}
 
-    public static Error requestErrorFactory(String condition, ApplicationConfigurationService applicationConfigurationService, JdbcUtils jdbcUtils){
+    public static Error getTypeError(String condition, ApplicationConfigurationService applicationConfigurationService, JdbcUtils jdbcUtils){
        if(Constants.ErrorType.ERROR_APX.equals(condition)){
            return new ErrorApx(applicationConfigurationService,jdbcUtils);
        } else if (Constants.ErrorType.ERROR_RIMAC.equals(condition)) {

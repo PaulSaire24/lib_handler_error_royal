@@ -9,5 +9,10 @@ public class Constants {
         public static final String ERROR_APX = "APX";
     }
 
+    public static final String CATALOG_ELEMENT_DESC = "CATALOG_ELEMENT_DESC";
+    public static final String CODE = "CODE";
+    public static final String DETAIL = "DETAIL";
+    public static final String PRODUCT_TYPE = "PRODUCT_TYPE";
+
 
 }
