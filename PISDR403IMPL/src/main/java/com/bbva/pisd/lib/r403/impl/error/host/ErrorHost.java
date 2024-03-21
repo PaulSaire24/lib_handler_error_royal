@@ -19,8 +19,8 @@ public class ErrorHost extends Error {
     }
 
     @Override
-    public ErrorResponseDTO findError(List<DetailsErrorDTO> details, String type, Long httpCode) {
+    public ErrorResponseDTO findError(List<DetailsErrorDTO> details, String reference) {
         ServiceError serviceError = new ServiceError(applicationConfigurationService,jdbcUtils);
-        return serviceError.findErrorBD(details,type);
+        return serviceError.findErrorBD(details,reference);
     }
 }

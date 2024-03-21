@@ -6,8 +6,11 @@ import com.bbva.pisd.lib.r403.impl.map.ErrorMap;
 import com.bbva.pisd.lib.r403.impl.repository.oracle.LeadBD;
 import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
 import com.bbva.rbvd.dto.insuranceroyal.error.DetailsErrorDTO;
+import org.apache.cxf.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.bbva.pisd.lib.r403.impl.util.Constants;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,43 +30,46 @@ public class ServiceError {
         this.jdbcUtils = jdbcUtils;
     }
 
-    public ErrorResponseDTO findErrorBD(List<DetailsErrorDTO> details, String type){
+    public ErrorResponseDTO findErrorBD(List<DetailsErrorDTO> details, String reference){
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
         LeadBD leadBD = new LeadBD(jdbcUtils);
-        Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray);
+        Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray,reference);
         LOGGER.info("ServiceError:: findErrrosBD argumets -> {}",arguments);
         String queryId = "PISD.QUERY_SELECT_ERROR_BY_".concat(String.valueOf(codeArray.size())).concat("_CODES");
         LOGGER.info("ServiceError:: findErrrosBD query Id -> {}",queryId);
         List<Map<String,Object>> resul = leadBD.executeGetListASingleRow(queryId,arguments);
         LOGGER.info("ServiceError:: result for database query -> {}",resul);
-        List<Map<String, String>> newList = new ArrayList<>();
-        for (Map<String, Object> map : resul) {
-            if (map.containsKey("CATALOG_ELEMENT_DESC")) {
-                String desc = (String) map.get("CATALOG_ELEMENT_DESC");
-                String[] parts = desc.split("\\|");
-                if (parts.length == 2) {
-                    String code = parts[0];
-                    String detail = parts[1];
-                    Map<String, String> newMap = new HashMap<>();
-                    newMap.put("CODE", code);
-                    newMap.put("DETAIL", detail);
-                    newList.add(newMap);
+        if(!CollectionUtils.isEmpty(resul)) {
+            List<Map<String, String>> newList = new ArrayList<>();
+            for (Map<String, Object> map : resul) {
+                if (map.containsKey(Constants.CATALOG_ELEMENT_DESC)) {
+                    String desc = (String) map.get(Constants.CATALOG_ELEMENT_DESC);
+                    String[] parts = desc.split("\\|");
+                    if (parts.length == 2) {
+                        String code = parts[0];
+                        String detail = parts[1];
+                        Map<String, String> newMap = new HashMap<>();
+                        newMap.put(Constants.CODE, code);
+                        newMap.put(Constants.DETAIL, detail);
+                        newList.add(newMap);
+                    }
                 }
             }
-        }
-        LOGGER.info("ServiceError:: new List -> {}",newList);
+            LOGGER.info("ServiceError:: new List -> {}", newList);
 
-        ErrorResponseDTO err = new ErrorResponseDTO();
-        StringBuilder mes = new StringBuilder();
-        for (Map<String,String> ref: newList) {
-            mes = mes.append(" / ").append(ref.get("DETAIL"));
+            ErrorResponseDTO err = new ErrorResponseDTO();
+            StringBuilder mes = new StringBuilder();
+            for (Map<String, String> ref : newList) {
+                mes = mes.append(" | ").append(ref.get(Constants.DETAIL));
+            }
+            mes.delete(0, 3);
+            err.setCode(newList.get(0).get(Constants.CODE));
+            err.setMessage(String.valueOf(mes));
+            LOGGER.info("ServiceError:: response error DTO -> {}", err);
+            return err;
         }
-        mes.delete(0,3);
-        err.setCode(newList.get(0).get("CODE"));
-        err.setMessage(String.valueOf(mes));
-        err.setType(type);
-        LOGGER.info("ServiceError:: response error DTO -> {}",err);
-
-        return err;
+        return null;
     }
+
+
 }

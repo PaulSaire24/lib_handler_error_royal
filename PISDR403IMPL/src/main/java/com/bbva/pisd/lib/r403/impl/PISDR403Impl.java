@@ -7,7 +7,6 @@ import com.bbva.rbvd.dto.insuranceroyal.error.ErrorResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class PISDR403Impl extends PISDR403Abstract {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PISDR403Impl.class);
@@ -15,7 +14,7 @@ public class PISDR403Impl extends PISDR403Abstract {
 	@Override
 	public ErrorResponseDTO executeFindError(ErrorRequestDTO requestError) {
 		LOGGER.info("request error:: request Error -> {}",requestError);
-		Error error = FactoryErrors.requestErrorFactory(requestError.getTypeErrorScope(), this.applicationConfigurationService, this.jdbcUtils);
-		return error.findError(requestError.getDetails(),requestError.getTypeErrorScope(),requestError.getHttpCode());
+		Error error = FactoryErrors.getTypeError(requestError.getTypeErrorScope(), this.applicationConfigurationService, this.jdbcUtils);
+		return error.findError(requestError.getDetails(),requestError.getReference());
 	}
 }

@@ -1,5 +1,6 @@
 package com.bbva.pisd.lib.r403;
 
+import com.bbva.apx.exception.db.NoResultException;
 import com.bbva.elara.configuration.manager.application.ApplicationConfigurationService;
 import com.bbva.elara.domain.transaction.Context;
 import com.bbva.elara.domain.transaction.ThreadContext;
@@ -37,9 +38,6 @@ import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -104,8 +102,9 @@ public class PISDR403Test {
 
 		ErrorResponseDTO err = pisdR403.executeFindError(error);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertTrue(err.size()>0);
+
 		Assert.assertNotNull(err);
+		Assert.assertEquals(0,this.context.getAdviceList().size());
 	}
 
 	@Test
@@ -120,8 +119,9 @@ public class PISDR403Test {
 
 		ErrorResponseDTO err = pisdR403.executeFindError(errorRe);
 		Assert.assertEquals(0, context.getAdviceList().size());
-		//Assert.assertTrue(err.size()>0);
+
 		Assert.assertNotNull(err);
+		Assert.assertEquals(0,this.context.getAdviceList().size());
 	}
 
 	@Test
@@ -151,6 +151,7 @@ public class PISDR403Test {
 		ErrorResponseDTO err= pisdR403.executeFindError(error);
 
 		assertNotNull(err);
+		Assert.assertEquals(0,this.context.getAdviceList().size());
 	}
 
 	@Test
@@ -180,6 +181,32 @@ public class PISDR403Test {
 		ErrorResponseDTO err= pisdR403.executeFindError(error);
 
 		assertNotNull(err);
+		Assert.assertEquals(0,this.context.getAdviceList().size());
+	}
+
+	@Test
+	public void executeTestWithExceptionFromDataBase() {
+		ErrorRequestDTO error = new ErrorRequestDTO();
+		error.setChannel("PIC");
+		DetailsErrorDTO details = new DetailsErrorDTO();
+		details.setCode("PER005005");
+		details.setValue("El campo nroDocumento de persona en su elemento 1 debe contener 8 caracteres");
+		DetailsErrorDTO details1 = new DetailsErrorDTO();
+		details1.setCode("PER005004");
+		details1.setValue("El campo nroDocumento de persona en su elemento 1 debe contener como máximo 11 caracteres");
+		List<DetailsErrorDTO> detailsList = new ArrayList<>();
+		detailsList.add(details);
+		detailsList.add(details1);
+		error.setDetails(detailsList);
+		error.setHttpCode(409L);
+		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
+
+		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException("adviceCode", "errorMessage"));
+
+		ErrorResponseDTO err = pisdR403.executeFindError(error);
+
+		Assert.assertNull(err);
+		Assert.assertEquals(0,this.context.getAdviceList().size());
 	}
 
 
