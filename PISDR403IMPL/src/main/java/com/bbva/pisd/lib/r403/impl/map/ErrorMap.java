@@ -16,8 +16,8 @@ public class ErrorMap {
         if(argumentsCodes.length()>0){
             argumentsCodes.deleteCharAt(argumentsCodes.length()-1);
         }
-        arguments.put(Constants.Columns.CATALOG_ELEMENT_ID,argumentsCodes.toString());
-        arguments.put(Constants.Columns.PRODUCT_TYPE,reference);
+        arguments.put(Constants.CATALOG_ELEMENT_ID,argumentsCodes.toString());
+        arguments.put(Constants.PRODUCT_TYPE,reference);
         return arguments;
     }
 }

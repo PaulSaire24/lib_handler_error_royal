@@ -42,15 +42,15 @@ public class ServiceError {
         if(!CollectionUtils.isEmpty(resul)) {
             List<Map<String, String>> newList = new ArrayList<>();
             for (Map<String, Object> map : resul) {
-                if (map.containsKey(Constants.Columns.CATALOG_ELEMENT_DESC)) {
-                    String desc = (String) map.get(Constants.Columns.CATALOG_ELEMENT_DESC);
+                if (map.containsKey(Constants.CATALOG_ELEMENT_DESC)) {
+                    String desc = (String) map.get(Constants.CATALOG_ELEMENT_DESC);
                     String[] parts = desc.split("\\|");
                     if (parts.length == 2) {
                         String code = parts[0];
                         String detail = parts[1];
                         Map<String, String> newMap = new HashMap<>();
-                        newMap.put(Constants.Error.CODE, code);
-                        newMap.put(Constants.Error.DETAIL, detail);
+                        newMap.put(Constants.CODE, code);
+                        newMap.put(Constants.DETAIL, detail);
                         newList.add(newMap);
                     }
                 }
@@ -60,10 +60,10 @@ public class ServiceError {
             ErrorResponseDTO err = new ErrorResponseDTO();
             StringBuilder mes = new StringBuilder();
             for (Map<String, String> ref : newList) {
-                mes = mes.append(" | ").append(ref.get(Constants.Error.DETAIL));
+                mes = mes.append(" | ").append(ref.get(Constants.DETAIL));
             }
             mes.delete(0, 3);
-            err.setCode(newList.get(0).get(Constants.Error.CODE));
+            err.setCode(newList.get(0).get(Constants.CODE));
             err.setMessage(String.valueOf(mes));
             LOGGER.info("ServiceError:: response error DTO -> {}", err);
             return err;
