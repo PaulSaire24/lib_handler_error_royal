@@ -26,6 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.bbva.pisd.lib.r403.impl.util.Constants;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +60,7 @@ public class PISDR403Test {
 
 	private DummyData dummyData;
 
-	@Resource(name = "applicationConfigurationService")
+	@Mock
 	private ApplicationConfigurationService applicationConfigurationService;
 
 	@Before
@@ -106,6 +108,7 @@ public class PISDR403Test {
 		Assert.assertNotNull(err);
 		Assert.assertEquals(0,this.context.getAdviceList().size());
 	}
+
 
 	@Test
 	public void executeFindErrorTestRimac() throws IOException {

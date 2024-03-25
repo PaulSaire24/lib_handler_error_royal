@@ -35,7 +35,7 @@ public class ServiceError {
         LeadBD leadBD = new LeadBD(jdbcUtils);
         Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray,reference);
         LOGGER.info("ServiceError:: findErrrosBD argumets -> {}",arguments);
-        String queryId = "PISD.QUERY_SELECT_ERROR_BY_".concat(String.valueOf(codeArray.size())).concat("_CODES");
+        String queryId = Constants.QUERY_NAME;
         LOGGER.info("ServiceError:: findErrrosBD query Id -> {}",queryId);
         List<Map<String,Object>> resul = leadBD.executeGetListASingleRow(queryId,arguments);
         LOGGER.info("ServiceError:: result for database query -> {}",resul);
