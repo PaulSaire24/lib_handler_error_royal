@@ -35,22 +35,22 @@ public class ServiceError {
         LeadBD leadBD = new LeadBD(jdbcUtils);
         Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray,reference);
         LOGGER.info("ServiceError:: findErrrosBD argumets -> {}",arguments);
-        String queryId = "PISD.QUERY_SELECT_ERROR_BY_".concat(String.valueOf(codeArray.size())).concat("_CODES");
+        String queryId = Constants.QUERY_NAME;
         LOGGER.info("ServiceError:: findErrrosBD query Id -> {}",queryId);
         List<Map<String,Object>> resul = leadBD.executeGetListASingleRow(queryId,arguments);
         LOGGER.info("ServiceError:: result for database query -> {}",resul);
         if(!CollectionUtils.isEmpty(resul)) {
             List<Map<String, String>> newList = new ArrayList<>();
             for (Map<String, Object> map : resul) {
-                if (map.containsKey(Constants.CATALOG_ELEMENT_DESC)) {
-                    String desc = (String) map.get(Constants.CATALOG_ELEMENT_DESC);
+                if (map.containsKey(Constants.Columns.CATALOG_ELEMENT_DESC)) {
+                    String desc = (String) map.get(Constants.Columns.CATALOG_ELEMENT_DESC);
                     String[] parts = desc.split("\\|");
                     if (parts.length == 2) {
                         String code = parts[0];
                         String detail = parts[1];
                         Map<String, String> newMap = new HashMap<>();
-                        newMap.put(Constants.CODE, code);
-                        newMap.put(Constants.DETAIL, detail);
+                        newMap.put(Constants.Error.CODE, code);
+                        newMap.put(Constants.Error.DETAIL, detail);
                         newList.add(newMap);
                     }
                 }
@@ -60,10 +60,10 @@ public class ServiceError {
             ErrorResponseDTO err = new ErrorResponseDTO();
             StringBuilder mes = new StringBuilder();
             for (Map<String, String> ref : newList) {
-                mes = mes.append(" | ").append(ref.get(Constants.DETAIL));
+                mes = mes.append(" | ").append(ref.get(Constants.Error.DETAIL));
             }
             mes.delete(0, 3);
-            err.setCode(newList.get(0).get(Constants.CODE));
+            err.setCode(newList.get(0).get(Constants.Error.CODE));
             err.setMessage(String.valueOf(mes));
             LOGGER.info("ServiceError:: response error DTO -> {}", err);
             return err;

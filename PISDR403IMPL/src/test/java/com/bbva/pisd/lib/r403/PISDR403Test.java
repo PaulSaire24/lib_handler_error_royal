@@ -58,7 +58,7 @@ public class PISDR403Test {
 
 	private DummyData dummyData;
 
-	@Resource(name = "applicationConfigurationService")
+	@Mock
 	private ApplicationConfigurationService applicationConfigurationService;
 
 	@Before

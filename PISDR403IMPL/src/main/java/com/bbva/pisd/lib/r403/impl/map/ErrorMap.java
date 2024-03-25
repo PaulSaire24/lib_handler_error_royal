@@ -9,10 +9,15 @@ public class ErrorMap {
 
     public static Map<String,Object> getArgumentsForQuery(List<String> arrayCodes, String reference){
         Map<String,Object> arguments = new HashMap<>();
-        for(int i = 0; i<arrayCodes.size();i++){
-            arguments.put(Constants.CODE+(i+1),arrayCodes.get(i));
+        StringBuilder argumentsCodes = new StringBuilder();
+        for (String code : arrayCodes){
+            argumentsCodes.append("'").append(code).append("'").append(",");
         }
-        arguments.put(Constants.PRODUCT_TYPE,reference);
+        if(argumentsCodes.length()>0){
+            argumentsCodes.deleteCharAt(argumentsCodes.length()-1);
+        }
+        arguments.put(Constants.Columns.CATALOG_ELEMENT_ID,argumentsCodes.toString());
+        arguments.put(Constants.Columns.PRODUCT_TYPE,reference);
         return arguments;
     }
 }
