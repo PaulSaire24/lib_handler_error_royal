@@ -2,9 +2,10 @@ package com.bbva.pisd.lib.r403.impl.util;
 
 public class Constants {
 
+    private Constants() {
+    }
+
     public final class ErrorType{
-        private ErrorType() {
-        }
 
         public static final String ERROR_RIMAC = "RIMAC";
         public static final String ERROR_HOST = "HOST";
@@ -13,15 +14,11 @@ public class Constants {
 
     public final class Error{
 
-        private Error() {
-        }
         public static final String CODE = "CODE";
         public static final String DETAIL = "DETAIL";
     }
 
     public final class Columns{
-        private Columns() {
-        }
 
         public static final String CATALOG_ELEMENT_DESC = "CATALOG_ELEMENT_DESC";
         public static final String PRODUCT_TYPE = "PRODUCT_TYPE";
