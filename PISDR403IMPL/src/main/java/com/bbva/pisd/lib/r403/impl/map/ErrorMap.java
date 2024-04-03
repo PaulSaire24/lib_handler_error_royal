@@ -7,7 +7,7 @@ import com.bbva.pisd.lib.r403.impl.util.Constants;
 
 public class ErrorMap {
 
-    public static Map<String,Object> getArgumentsForQuery(List<String> arrayCodes, String reference){
+    public static Map<String,Object> getArgumentsForQuery(List<String> arrayCodes, String codeError,String channel){
         Map<String,Object> arguments = new HashMap<>();
         StringBuilder argumentsCodes = new StringBuilder();
         for (String code : arrayCodes){

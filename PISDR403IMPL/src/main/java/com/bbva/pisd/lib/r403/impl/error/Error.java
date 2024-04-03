@@ -7,6 +7,6 @@ import java.util.List;
 
 public abstract class Error {
 
-    public abstract ErrorResponseDTO findError(List<DetailsErrorDTO> details, String reference);
+    public abstract ErrorResponseDTO findError(List<DetailsErrorDTO> details, String code, String channel);
 
 }

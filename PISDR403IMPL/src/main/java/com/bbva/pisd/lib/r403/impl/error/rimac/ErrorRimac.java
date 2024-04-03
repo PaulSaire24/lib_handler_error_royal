@@ -20,8 +20,8 @@ public class ErrorRimac extends Error {
     }
 
     @Override
-    public ErrorResponseDTO findError(List<DetailsErrorDTO> details, String reference) {
+    public ErrorResponseDTO findError(List<DetailsErrorDTO> details, String code, String channel) {
         ServiceError serviceError = new ServiceError(applicationConfigurationService,jdbcUtils);
-        return serviceError.findErrorBD(details,reference);
+        return serviceError.findErrorBD(details,code,channel);
     }
 }

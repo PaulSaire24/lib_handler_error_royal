@@ -30,10 +30,10 @@ public class ServiceError {
         this.jdbcUtils = jdbcUtils;
     }
 
-    public ErrorResponseDTO findErrorBD(List<DetailsErrorDTO> details, String reference){
+    public ErrorResponseDTO findErrorBD(List<DetailsErrorDTO> details, String codeError, String channel) {
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
         LeadBD leadBD = new LeadBD(jdbcUtils);
-        Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray,reference);
+        Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray,codeError,channel);
         LOGGER.info("ServiceError:: findErrrosBD argumets -> {}",arguments);
         String queryId = Constants.QUERY_NAME;
         LOGGER.info("ServiceError:: findErrrosBD query Id -> {}",queryId);
@@ -46,10 +46,10 @@ public class ServiceError {
                     String desc = (String) map.get(Constants.CATALOG_ELEMENT_DESC);
                     String[] parts = desc.split("\\|");
                     if (parts.length == 2) {
-                        String code = parts[0];
+                        String codeDetails = parts[0];
                         String detail = parts[1];
                         Map<String, String> newMap = new HashMap<>();
-                        newMap.put(Constants.CODE, code);
+                        newMap.put(Constants.CODE, codeDetails);
                         newMap.put(Constants.DETAIL, detail);
                         newList.add(newMap);
                     }
