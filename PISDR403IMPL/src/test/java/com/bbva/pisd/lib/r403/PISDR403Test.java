@@ -3,8 +3,7 @@ package com.bbva.pisd.lib.r403;
 import com.bbva.apx.exception.db.NoResultException;
 import com.bbva.elara.configuration.manager.application.ApplicationConfigurationService;
 import com.bbva.elara.domain.transaction.Context;
-import com.bbva.elara.domain.transaction.ThreadContext;
-import javax.annotation.Resource;
+import com.bbva.elara.domain.transaction.ThreadContext;;
 
 import com.bbva.elara.utility.jdbc.JdbcUtils;
 import com.bbva.pisd.lib.r403.impl.PISDR403Impl;
@@ -20,14 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.aop.framework.Advised;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.bbva.pisd.lib.r403.impl.util.Constants;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +38,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(locations = {
 		"classpath:/META-INF/spring/PISDR403-app.xml",
 		"classpath:/META-INF/spring/PISDR403-app-test.xml",
@@ -94,6 +91,8 @@ public class PISDR403Test {
 		error.setDetails(Collections.singletonList(details));
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_HOST);
+		error.setChannel("PIC");
+		error.setCode("ERRF0002");
 
 		List<Map<String, Object>> listResponse = new ArrayList<>();
 		Map<String, Object> response = new HashMap<>();
@@ -113,6 +112,8 @@ public class PISDR403Test {
 	@Test
 	public void executeFindErrorTestRimac() throws IOException {
 		ErrorRequestDTO errorRe = DummyData.getInstance().getErrorRequestRoyal();
+		errorRe.setChannel("PIC");
+		errorRe.setCode("ERRF0002");
 		List<Map<String, Object>> listResponse = new ArrayList<>();
 		Map<String, Object> response = new HashMap<>();
 		response.put("CATALOG_ELEMENT_DESC", "BBVA00123478|La fecha de nacimiento debe tener un formato válido");
@@ -143,6 +144,8 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_RIMAC);
+		error.setChannel("PIC");
+		error.setCode("ERRF0002");
 
 		List<Map<String, Object>> listResponse = new ArrayList<>();
 		Map<String, Object> response = new HashMap<>();
@@ -173,6 +176,8 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
+		error.setChannel("PIC");
+		error.setCode("ERRF0002");
 
 		List<Map<String, Object>> listResponse = new ArrayList<>();
 		Map<String, Object> response = new HashMap<>();
@@ -203,6 +208,8 @@ public class PISDR403Test {
 		error.setDetails(detailsList);
 		error.setHttpCode(409L);
 		error.setTypeErrorScope(Constants.ErrorType.ERROR_APX);
+		error.setChannel("PIC");
+		error.setCode("ERRF0002");
 
 		when(jdbcUtils.queryForList(anyString(), anyMap())).thenThrow(new NoResultException("adviceCode", "errorMessage"));
 
