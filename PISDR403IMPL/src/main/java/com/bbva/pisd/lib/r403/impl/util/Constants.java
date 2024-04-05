@@ -19,8 +19,8 @@ public class Constants {
 
     public enum TypeError {
 
-        FUNCTIONAL("ERRF", "002"),
-        TECHNICAL("ERRT", "001"),
+        FUNCTIONAL("ERRF", "001"),
+        TECHNICAL("ERRT", "002"),
         DATA("ERRD", "003");
         private final String name;
         private final String code;
