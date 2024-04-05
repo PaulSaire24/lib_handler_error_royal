@@ -3,7 +3,7 @@ package com.bbva.pisd.lib.r403;
 import com.bbva.apx.exception.db.NoResultException;
 import com.bbva.elara.configuration.manager.application.ApplicationConfigurationService;
 import com.bbva.elara.domain.transaction.Context;
-import com.bbva.elara.domain.transaction.ThreadContext;;
+import com.bbva.elara.domain.transaction.ThreadContext;
 
 import com.bbva.elara.utility.jdbc.JdbcUtils;
 import com.bbva.pisd.lib.r403.impl.PISDR403Impl;
@@ -69,7 +69,11 @@ public class PISDR403Test {
 		pisdR403.setJdbcUtils(jdbcUtils);
 		getObjectIntrospection();
 		when(applicationConfigurationService.getProperty("enableRimacErrorMessage")).thenReturn("false");
+		when(applicationConfigurationService.getProperty("ERRF")).thenReturn("001");
+		when(applicationConfigurationService.getProperty("ERRT")).thenReturn("002");
+		when(applicationConfigurationService.getProperty("ERRD")).thenReturn("003");
 		when(applicationConfigurationService.getDefaultProperty("rimacMessageSeparator"," / ")).thenReturn("|");
+
 	}
 
 	private Object getObjectIntrospection() throws Exception{
