@@ -17,36 +17,10 @@ public class Constants {
         public static final String CATALOG_ELEMENT_ID = "CATALOG_ELEMENT_ID";
         public static final String QUERY_NAME = "PISD.QUERY_SELECT_ERROR_BY_CODES_AND_PRODUCT";
 
-    public enum TypeError {
+        public static final String ERRF = "ERRF";
+        public static final String ERRT = "ERRT";
+        public static final String ERRD = "ERRD";
 
-        FUNCTIONAL("ERRF", "001"),
-        TECHNICAL("ERRT", "002"),
-        DATA("ERRD", "003");
-        private final String name;
-        private final String code;
 
-        public String getName() {
-            return name;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        TypeError(String name, String code) {
-            this.name = name;
-            this.code = code;
-        }
-    }
-
-    public static String getCodeByName(String name){
-        TypeError[] val = TypeError.values();
-        for (TypeError er: val) {
-            if(er.getName().equalsIgnoreCase(name)){
-                return er.getCode();
-            }
-        }
-        return null;
-    }
 
 }

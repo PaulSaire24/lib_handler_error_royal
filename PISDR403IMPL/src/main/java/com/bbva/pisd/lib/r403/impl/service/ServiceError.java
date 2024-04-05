@@ -33,7 +33,9 @@ public class ServiceError {
     public ErrorResponseDTO findErrorBD(List<DetailsErrorDTO> details, String codeError, String channel) {
         List<String> codeArray = details.stream().map(x -> x.getCode()).collect(Collectors.toList());
         LeadBD leadBD = new LeadBD(jdbcUtils);
-        Map<String,Object> arguments = ErrorMap.getArgumentsForQuery(codeArray,codeError,channel);
+
+        ErrorMap errorMap = new ErrorMap(applicationConfigurationService);
+        Map<String,Object> arguments = errorMap.getArgumentsForQuery(codeArray,codeError,channel);
         LOGGER.info("ServiceError:: findErrrosBD argumets -> {}",arguments);
         String queryId = Constants.QUERY_NAME;
         LOGGER.info("ServiceError:: findErrrosBD query Id -> {}",queryId);
