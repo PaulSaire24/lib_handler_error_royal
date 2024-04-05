@@ -15,7 +15,7 @@ public class ErrorMap {
             argumentsCodes.append("'").append(code).append("'").append(",");
         }
         if(argumentsCodes.length()>0){
-            argumentsCodes.deleteCharAt(argumentsCodes.length()-1);
+            argumentsCodes = new StringBuilder(argumentsCodes.substring(1, argumentsCodes.length() - 2));
         }
 
         String shortCode = codeError.substring(0,4);
